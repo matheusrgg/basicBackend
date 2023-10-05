@@ -8,6 +8,9 @@ const database = require("./db")
 database.sync()
 const fornecedorRoutes = require("./routes/fornecedor.routes")
 const adminRoutes = require("./routes/admin.routes")
+const anuncioRoutes = require("./routes/anuncio.routes");
+const Fornecedor = require('./model/Fornecedor');
+const Anuncio = require('./model/Anuncio');
 
 app.use((req, res, next) => {
   res.append('Access-Control-Allow-Origin', ['*']);
@@ -15,10 +18,17 @@ app.use((req, res, next) => {
   res.append('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
+
+Fornecedor.hasMany(Anuncio, { foreignKey: 'idFornecedor' })
+Anuncio.belongsTo(Fornecedor, { foreignKey: 'idFornecedor' })
+
+
+
 app.use(bp.json())
 app.use(bp.urlencoded({ extended: true }))
 app.use("/fornecedor", fornecedorRoutes)
 app.use("/admin", adminRoutes)
+app.use("/anuncio", anuncioRoutes)
 app.get('/welcome', function (req, res) { res.status(200).send("teste"); })
 
 
