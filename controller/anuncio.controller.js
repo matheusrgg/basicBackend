@@ -34,6 +34,9 @@ class AnuncioController {
 
 
     }
+
+
+
 }
 
 module.exports = AnuncioController

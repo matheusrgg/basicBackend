@@ -1,3 +1,4 @@
+const Anuncio = require('../model/Anuncio');
 const Fornecedor = require('../model/Fornecedor')
 
 
@@ -67,6 +68,30 @@ class FornecedorController {
     catch (error) {
       console.log(error);
     }
+  }
+
+  static async listAnunciosFornecedor(req, res) {
+    const idFornecedor = req.params.id
+    const propostas = await Anuncio.findAll({
+      where: {
+        idFornecedor: idFornecedor,
+
+      },
+      include: {
+        model: Fornecedor,
+        required: true
+      },
+
+
+    })
+    const propstaComNome = propostas.map(data => {
+      return {
+        id: data.id,
+
+
+      }
+    })
+    return res.status(201).send(propstaComNome);
   }
 
 
