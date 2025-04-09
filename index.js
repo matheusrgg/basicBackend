@@ -19,6 +19,23 @@ app.use(express.json());
 
 app.get('/welcome', function (req, res) { res.status(200).send("teste"); })
 
+const mockDatabase = [
+    { id: 1, title: 'Oferta Solar', description: 'Plano com 20% de desconto' },
+    { id: 2, title: 'Energia Eólica', description: 'Plano sustentável e barato' },
+    { id: 3, title: 'Energia Híbrida', description: 'Melhor custo-benefício' },
+  ];
+  
+  // Acessa via: /submit/Oferta%20Solar
+  app.get('/:title', (req, res) => {
+    const { title } = req.params;
+  
+    const filtered = mockDatabase.filter(item =>
+      item.title.toLowerCase().includes(title.toLowerCase())
+    );
+  
+    res.json(filtered);
+  });
+  
 
 
 //--------------------> Porta de Desenvolvimento
