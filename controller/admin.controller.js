@@ -1,13 +1,19 @@
 
 const Admin = require('../model/Admin')
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+
 class AdminController {
 
-    static listAdmin() {
-        const anuncio = anuncio.findAll()
-        return res.status(201).send(vai);
-    }
+    static async listAdmin(req,res) {
+      
+        try {
+          const admins = await Admin.findAll(); // use the model 'admin', store result in 'admins'
+          return res.status(200).json(admins);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).json({ error: 'Failed to fetch admins' });
+        }
+      }
+
 
 
     static async createAdmin(req, res) {
@@ -25,35 +31,6 @@ class AdminController {
         }
     }
 
-
-    static async loginAdmin(req, res) {
-        console.log("request vindo body", req.body)
-        const { username, password } = req.body
-        console.log("passwordaaaaaaaa", password);
-        const adminLogin = await Admin.findOne({
-            where: {
-                username: username
-                // email: email
-            }
-        });
-        console.log("admins entendendo", adminLogin)
-        if (adminLogin) {
-            console.log("estou entrando")
-            if (bcrypt.compare(password, adminLogin.password)) {
-                console.log("ENTREIII NO IF")
-                const token = jwt.sign({
-                    username: adminLogin.username,
-                    id: adminLogin.id,
-
-                }, 'mysecretkey');
-                return res.status(201).json(token)
-            } else {
-                res.status(401).send("passworda errada")
-            }
-        } else {
-            return res.status(401).send("Authentication Failed")
-        }
-    }
 }
 
 
